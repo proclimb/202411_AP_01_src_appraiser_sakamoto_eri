@@ -53,7 +53,7 @@ function fnPage($c,$p,$a){
 <?php
 	}
 ?>
-検索結果：<?php print $c;?>件<br />
+検索結果：<?php if($c === null){print 0;} else {print $c;}?>件<br />
 <?php
 	return($p);
 }
