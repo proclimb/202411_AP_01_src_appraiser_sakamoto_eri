@@ -59,12 +59,12 @@ function subStockView($param)
 				<tr>
 					<th>ランク</th>
 					<td>
-						<?php
+					<?php
 						for ($i = 0; $i < 5; $i++) {
 						?>
-							<input type="checkbox" name="sRank[]" value="<?php print $i + 1; ?>" <?php for ($j = 0; $j < 5; $j++) {
-																										if ($param["sRank"][$j] == $i + 1) print ' checked="checked"';
-																									} ?> /> <?php print fnRankName($i) ?>
+							<input type="checkbox" name="sRank[]" value="<?php print $i + 1; ?>" <?php for ($j = 0; $j < 6; $j++) {
+																									if ($param["sRank"][$j] == $i + 1) print ' checked="checked"';
+																								} ?> /> <?php print fnRankName($i); ?>
 						<?php
 						}
 						?>
