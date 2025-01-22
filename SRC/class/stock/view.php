@@ -282,7 +282,7 @@ function subStockEditView($param)
 			</tr>
 			<tr>
 				<th>最寄駅</th>
-				<td><input type="text" name="station" value="<?php print $param["station"] ?>" /></td>
+				<td><input type="text" name="sStation" value="<?php print $param["sStation"] ?>" /></td>
 			</tr>
 			<tr>
 				<th>距離</th>
