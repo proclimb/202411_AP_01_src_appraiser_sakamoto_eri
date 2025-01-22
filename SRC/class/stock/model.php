@@ -157,7 +157,7 @@ function fnSqlStockUpdate($param)
 function fnSqlStockInsert($param)
 {
     $sql = "INSERT INTO TBLSTOCK(";
-    $sql .= "CHARGE,`RANK`,ARTICLE,ARTICLEFURI,ROOM,AREA,STATION,DISTANCE,AGENT,STORE,COVER,VISITDT,DESKPRICE,VENDORPRICE,NOTE,HOW,INSDT,UPDT,DEL";
+    $sql .= "STOCKNO,CHARGE,`RANK`,ARTICLE,ARTICLEFURI,ROOM,AREA,STATION,DISTANCE,AGENT,STORE,COVER,VISITDT,DESKPRICE,VENDORPRICE,NOTE,HOW,INSDT,UPDT,DEL";
     $sql .= ")VALUES(";
     $sql .= "'" . $param["stockNo"] . "','" . $param["charge"] . "','" . $param["rank"] . "','" . $param["article"] . "','"
         . $param["articleFuri"] . "','" . $param["room"] . "','" . $param["area"] . "','" . $param["station"] . "','"
