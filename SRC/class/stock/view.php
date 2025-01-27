@@ -266,9 +266,14 @@ function subStockEditView($param)
 				<td>
 				<?php
 					for ($i = 0; $i < 5; $i++) {
+						if(!$i){
 					?>
-					<input type="radio" name="rank" value="<?php print $i + 1; ?>" <?php if ($param["rank"] == $i+1) print ' checked="checked"'; ?> /> <?php print fnRankName($i); ?>
+					<input type="radio" name="rank" value="<?php print $i + 1; ?>" <?php if ($param["rank"] == $i) print ' checked="checked"'; ?> /> <?php print fnRankName($i); ?>
 					<?php
+					} else {?>
+						<input type="radio" name="rank" value="<?php print $i + 1; ?>" <?php if ($param["rank"] == $i + 1) print ' checked="checked"'; ?> /> <?php print fnRankName($i); ?>
+					<?php
+						}
 					}
 					?>
 				</td>
@@ -298,9 +303,15 @@ function subStockEditView($param)
 				<td>
 					<?php
 					for ($i = 0; $i < 4; $i++) {
+						if($i == null){
 					?>
-						<input type="radio" name="distance" value="<?php print $i + 1; ?>" <?php if ($param["distance"] == $i+1) print ' checked="checked"'; ?> /> <?php print fnDistanceName($i); ?>
+						<input type="radio" name="distance" value="<?php print $i + 1; ?>" <?php if ($param["distance"] == $i) {print ' checked="checked"';} else  ?> /> <?php print fnDistanceName($i); ?>
 					<?php
+					} else {
+					?>
+						<input type="radio" name="distance" value="<?php print $i + 1; ?>" <?php if ($param["distance"] == $i + 1) {print ' checked="checked"';} else  ?> /> <?php print fnDistanceName($i); ?>
+					<?php
+					}
 					}
 					?>
 				</td>
