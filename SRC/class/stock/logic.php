@@ -75,8 +75,20 @@ function subStockEdit()
 //
 // 仕入管理編集完了処理
 //
-function subStockEditComplete()
-{
+function checkDuplicateStock($conn, $param) {
+    // 直近1分以内に同じ物件が登録されていないかチェック
+    $sql = "SELECT COUNT(*) FROM TBLSTOCK WHERE 
+            ARTICLE = '" . mysqli_real_escape_string($conn, $param["article"]) . "' 
+            AND ROOM = '" . mysqli_real_escape_string($conn, $param["room"]) . "'
+            AND INSDT >= NOW() - INTERVAL 1 MINUTE";
+    
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($result);
+    
+    return $row[0] > 0;
+}
+
+function subStockEditComplete() {
     $conn = fnDbConnect();
 
     $param["sDel"] = htmlspecialchars($_REQUEST['sDel']);
@@ -120,15 +132,23 @@ function subStockEditComplete()
     $param["how"] = mysqli_real_escape_string($conn, $_REQUEST['how']);
     $param["del"] = mysqli_real_escape_string($conn, $_REQUEST['del']);
 
-    if ($param["stockNo"]) {
-        $sql = fnSqlStockUpdate($param);
-        $res = mysqli_query($conn, $sql);
-    } else {
+    if (!$param["stockNo"]) {  // 新規登録の場合のみ重複チェック
+        if (checkDuplicateStock($conn, $param)) {
+            // 重複エラーの場合、一覧画面に戻る
+            $_REQUEST['act'] = 'stockSearch';
+            subStock();
+            return;
+        }
+        
         $param["stockNo"] = fnNextNo('STOCK');
         $sql = fnSqlStockInsert($param);
-        $res = mysqli_query($conn, $sql);
+    } else {
+        $sql = fnSqlStockUpdate($param);
     }
+    
+    $res = mysqli_query($conn, $sql);
 
+    // 処理成功後、検索画面に遷移
     $_REQUEST['act'] = 'stockSearch';
     subStock();
 }
