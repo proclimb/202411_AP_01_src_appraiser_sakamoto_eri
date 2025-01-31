@@ -55,20 +55,20 @@ function fnTradeEditCheck() {
 	}
 
 	tmp = form.tel.value;
-	if (tmp.length > 100) {
-		alert('TELは100文字以内で入力してください');
+	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
+		alert('TELは100文字以内の半角数字で入力してください');
 		return;
 	}
 
 	tmp = form.fax.value;
-	if (tmp.length > 100) {
-		alert('FAXは100文字以内で入力してください');
+	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
+		alert('TELは100文字以内の半角数字で入力してください');
 		return;
 	}
 
 	tmp = form.mobile.value;
-	if (tmp.length > 100) {
-		alert('携帯電話は100文字以内で入力してください');
+	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
+		alert('TELは100文字以内の半角数字で入力してください');
 		return;
 	}
 
