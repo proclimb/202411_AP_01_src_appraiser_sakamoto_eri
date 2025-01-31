@@ -354,15 +354,27 @@ function subTradeEditComplete()
 	$del        = mysqli_real_escape_string($conn, $_REQUEST['del']);
 
 	if ($tradeNo) {
-		$sql = fnSqlTradeUpdate($tradeNo, $name, $nameFuri, $branch, $branchFuri, $zip, $prefecture, $address1, $address2, $tel, $fax, $mobile, $interior, $del);
-		$res = mysqli_query($conn, $sql);
-	} else {
-		$sql = fnSqlTradeInsert(fnNextNo('TRADE'), $name, $nameFuri, $branch, $branchFuri, $zip, $prefecture, $address1, $address2, $tel, $fax, $mobile, $interior, $del);
-		$res = mysqli_query($conn, $sql);
-	}
+        $sql = fnSqlTradeUpdate($tradeNo, $name, $nameFuri, $branch, $branchFuri, $zip, $prefecture, $address1, $address2, $tel, $fax, $mobile, $interior, $del);
+        $res = mysqli_query($conn, $sql);
+    } else {
+        $sql = fnSqlTradeInsert(fnNextNo('TRADE'), $name, $nameFuri, $branch, $branchFuri, $zip, $prefecture, $address1, $address2, $tel, $fax, $mobile, $interior, $del);
+        $res = mysqli_query($conn, $sql);
+    }
 
-	$_REQUEST['act'] = 'tradeSearch';
-	subTrade();
+	$params = array(
+        'act' => 'tradeSearch',
+        'sDel' => $sDel,
+        'sPage' => $sPage,
+        'orderBy' => $orderBy,
+        'orderTo' => $orderTo
+    );
+    
+    // リダイレクト用のURLを生成
+    $redirectUrl = 'index.php?' . http_build_query($params);
+    
+    // リダイレクト実行
+    header('Location: ' . $redirectUrl);
+    exit;
 }
 
 

@@ -54,23 +54,26 @@ function fnTradeEditCheck() {
 		return;
 	}
 
-	tmp = form.tel.value;
-	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
-		alert('TELは100文字以内の半角数字で入力してください');
-		return;
-	}
+// TELのチェック
+tmp = form.tel.value;
+if (tmp && (tmp.length > 100 || !tmp.match(/^[\d-]+$/))) {
+    alert('TELは100文字以内の半角数字とハイフンで入力してください');
+    return;
+}
 
-	tmp = form.fax.value;
-	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
-		alert('TELは100文字以内の半角数字で入力してください');
-		return;
-	}
+// FAXのチェック
+tmp = form.fax.value;
+if (tmp && (tmp.length > 100 || !tmp.match(/^[\d-]+$/))) {
+    alert('FAXは100文字以内の半角数字とハイフンで入力してください');
+    return;
+}
 
-	tmp = form.mobile.value;
-	if (tmp.length > 100 || tmp.match(/[^0-9]+/)) {
-		alert('TELは100文字以内の半角数字で入力してください');
-		return;
-	}
+// 携帯電話のチェック
+tmp = form.mobile.value;
+if (tmp && (tmp.length > 100 || !tmp.match(/^[\d-]+$/))) {
+    alert('携帯電話は100文字以内の半角数字とハイフンで入力してください');
+    return;
+}
 
 	if (confirm('この内容で登録します。よろしいですか？')) {
 		form.act.value = 'tradeEditComplete';
