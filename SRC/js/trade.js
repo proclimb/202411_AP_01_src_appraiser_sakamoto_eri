@@ -31,11 +31,11 @@ function fnTradeEditCheck() {
 	}
 
 	tmp = form.zip.value;
-	if (tmp.length > 0 && !tmp.match(/^\d{3}(\s*|-)\d{4}$/)) {
+	if (tmp.length > 0 && (!tmp.match(/^\d{3}(-?)\d{4}$/) || tmp.match(/[\s　]/))) {
 		alert("正しい郵便番号(***-**** 又は ******* )で\n入力してください");
 		return;
 	}
-
+	
 	tmp = form.prefecture.value;
 	if (tmp.length > 10) {
 		alert('住所（都道府県）は10文字以内で入力してください');
