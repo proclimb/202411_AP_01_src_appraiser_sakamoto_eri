@@ -4,45 +4,45 @@
 //
 function fnSqlArticleList($flg, $sDel, $sArticle, $sRoom, $sKeyPlace, $sArticleNote, $sKeyBox, $sDrawing, $sSellCharge, $sPage, $orderBy, $orderTo)
 {
-	switch ($flg) {
-		case 0:
-			$sql  = "SELECT COUNT(*)";
-			break;
-		case 1:
-			$sql  = "SELECT ARTICLENO, ARTICLE, RO0M, KEYPLACE, ARTICLENOTE, KEYBOX, DRAWING, SELLCHARGE";
-			break;
-	}
-	$sql .= " FROM TBLARTICLE";
-	$sql .= " WHERE DEL = $sDel";
-	if ($sArticle) {
-		$sql .= " OR ARTICLE LIKE '%$sArticle$%'";
-	}
-	if ($sRoom) {
-		$sql .= " OR ROOM LIKE '%$sRoom%'";
-	}
-	if ($sKeyPlace) {
-		$sql .= " OR KEYPLACE LIKE '%$sKeyPlace%'";
-	}
-	if ($sArticleNote) {
-		$sql .= " OR ARTICLENOTE LIKE '%$sArticleNote%'";
-	}
-	if ($sKeyBox) {
-		$sql .= " OR KEYBOX LIKE '%l$sKeyBox%'";
-	}
-	if ($sDrawing) {
-		$sql .= " OR DRAWING LIKE '%$sDrawing%'";
-	}
-	if ($sSellCharge) {
-		$sql .= " OR SELLCHARGE LIKE '%$sSellCharge%'";
-	}
-	if ($orderBy) {
-		$sql .= " ORDER BY $orderBy $orderTo";
-	}
-	if ($flg) {
-		$sql .= " LIMIT " . (($sPage + 1) * PAGE_MAX) . ", " . PAGE_MAX;
-	}
+    switch ($flg) {
+        case 0:
+            $sql  = "SELECT COUNT(*)";
+            break;
+        case 1:
+            $sql  = "SELECT ARTICLENO, ARTICLE, ROOM, KEYPLACE, ARTICLENOTE, KEYBOX, DRAWING, SELLCHARGE";
+            break;
+    }
+    $sql .= " FROM TBLARTICLE";
+    $sql .= " WHERE DEL = $sDel";
+    if ($sArticle) {
+        $sql .= " AND ARTICLE LIKE '%$sArticle%'";  // ANDで条件を追加
+    }
+    if ($sRoom) {
+        $sql .= " AND ROOM LIKE '%$sRoom%'";        // ANDで条件を追加
+    }
+    if ($sKeyPlace) {
+        $sql .= " AND KEYPLACE LIKE '%$sKeyPlace%'";  // ORをANDに変更
+    }
+    if ($sArticleNote) {
+        $sql .= " AND ARTICLENOTE LIKE '%$sArticleNote%'";  // ORをANDに変更
+    }
+    if ($sKeyBox) {
+        $sql .= " AND KEYBOX LIKE '%$sKeyBox%'";  // ORをANDに変更、typo修正
+    }
+    if ($sDrawing) {
+        $sql .= " AND DRAWING LIKE '%$sDrawing%'";  // ORをANDに変更
+    }
+    if ($sSellCharge) {
+        $sql .= " AND SELLCHARGE LIKE '%$sSellCharge%'";  // ORをANDに変更
+    }
+    if ($orderBy) {
+        $sql .= " ORDER BY $orderBy $orderTo";
+    }
+    if ($flg) {
+        $sql .= " LIMIT " . (($sPage - 1) * PAGE_MAX) . ", " . PAGE_MAX;
+    }
 
-	return ($sql);
+    return ($sql);
 }
 
 
@@ -54,7 +54,7 @@ function fnSqlArticleEdit($articleNo)
 {
 	$sql  = "SELECT ARTICLE, ROOM, KEYPLACE, ADDRESS, ARTICLENOTE, KEYBOX, DRAWING, SELLCHARGE, DEL";
 	$sql .= " FROM TBLARTICLE";
-	$sql .= " WHERE ARTICLENO = 1";
+	$sql .= " WHERE ARTICLENO = $articleNo";
 
 	return ($sql);
 }
@@ -70,7 +70,7 @@ function fnSqlArticleUpdate($articleNo, $article, $room, $keyPlace, $address, $a
 	$sql .= " SET ARTICLE = '$article'";
 	$sql .= ",ROOM = '$room'";
 	$sql .= ",KEYPLACE = '$keyPlace'";
-	$sql .= ",ADDRESS = '$address";
+	$sql .= ",ADDRESS = '$address'";
 	$sql .= ",ARTICLENOTE = '$articleNote'";
 	$sql .= ",KEYBOX = '$keyBox'";
 	$sql .= ",DRAWING = '$drawing'";
@@ -86,22 +86,21 @@ function fnSqlArticleUpdate($articleNo, $article, $room, $keyPlace, $address, $a
 //
 //物件管理情報登録
 //
-function fnSqlArticleInsert($articleNo,  $keyPlace, $article, $address,  $keyBox, $articleNote, $drawing, $sellCharge, $room, $del)
+function fnSqlArticleInsert($articleNo, $article, $room, $keyPlace, $address, $articleNote, $keyBox, $drawing, $sellCharge, $del)
 {
-	$sql  = "INSERT INTO tblarticle (";
-	$sql .= " ARTICLENO, ROOM, ARTICLE, KEYPLACE, ARTICLENOTE, KEYBOX, ADDRESS, DUEDT, SELLCHARGE, AREA, YEARS, SELLPRICE, INTERIORPRICE, CONSTTRADER,"
-		. " CONSTPRICE, CONSTADD, CONSTNOTE, PURCHASEDT, WORKSTARTDT, WORKENDDT, LINEOPENDT, LINECLOSEDT, RECEIVE, HOTWATER, SITEDT, LEAVINGFORM,"
-		. " LEAVINGDT, MANAGECOMPANY, FLOORPLAN, FORMEROWNER, BROKERCHARGE, BROKERCONTACT, INTERIORCHARGE, CONSTFLG1, CONSTFLG2, CONSTFLG3, CONSTFLG4, INSDT, UPDT, DEL,"
-		. " DRAWING, LINEOPENCONTACTDT, LINECLOSECONTACTDT, LINECONTACTNOTE, ELECTRICITYCHARGE, GASCHARGE, LIGHTORDER";
-	$sql .= " ) VALUES ( ";
-	$sql .= "'$articleNo', '$article', '$room', '$keyPlace', '$address', '$articleNote', '$keyBox', '', '$sellCharge', '', '', '', '', '',"
-		. " '', '', '', '', '', '', '', '', '', '', '', '',"
-		. " '', '', '', '', '', '', '', '', '', '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '$del',"
-		. " '$drawing', '', '', '', '', '', '' )";
+    $sql  = "INSERT INTO TBLARTICLE (";
+    $sql .= " ARTICLENO, ARTICLE, ROOM, KEYPLACE, ADDRESS, ARTICLENOTE, KEYBOX, DUEDT, SELLCHARGE, AREA, YEARS, SELLPRICE, INTERIORPRICE, CONSTTRADER," 
+        . " CONSTPRICE, CONSTADD, CONSTNOTE, PURCHASEDT, WORKSTARTDT, WORKENDDT, LINEOPENDT, LINECLOSEDT, RECEIVE, HOTWATER, SITEDT, LEAVINGFORM," 
+        . " LEAVINGDT, MANAGECOMPANY, FLOORPLAN, FORMEROWNER, BROKERCHARGE, BROKERCONTACT, INTERIORCHARGE, CONSTFLG1, CONSTFLG2, CONSTFLG3, CONSTFLG4, INSDT, UPDT, DEL," 
+        . " DRAWING, LINEOPENCONTACTDT, LINECLOSECONTACTDT, LINECONTACTNOTE, ELECTRICITYCHARGE, GASCHARGE, LIGHTORDER";
+    $sql .= " ) VALUES ( ";
+    $sql .= "'$articleNo', '$article', '$room', '$keyPlace', '$address', '$articleNote', '$keyBox', '', '$sellCharge', '', '', '', '', ''," 
+        . " '', '', '', '', '', '', '', '', '', '', '', ''," 
+        . " '', '', '', '', '', '', '', '', '', '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '$del'," 
+        . " '$drawing', '', '', '', '', '', '' )";
 
-	return ($sql);
+    return ($sql);
 }
-
 
 
 //
