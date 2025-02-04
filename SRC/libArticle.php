@@ -19,7 +19,7 @@ function subArticle()
 	$orderTo = $_REQUEST['orderTo'];
 	$sPage   = $_REQUEST['sPage'];
 
-	if ($sDel = '') {
+	if ($sDel == '') {
 		$sDel = 1;
 	}
 
@@ -52,7 +52,7 @@ function subArticle()
 			<table border="0" cellpadding="2" cellspacing="0">
 				<tr>
 					<th>除外</th>
-					<td><input type="checkbox" name="sDel" value="0" <?php if ($sDel == 0) print ' checked="checked"' ?> /></td>
+					<td><input type="checkbox" name="sDel" value="0" <?php if ($sDel == 0) print ' checked="checked"'; ?> /></td>
 					<th>備考</th>
 					<td><input type="text" name="sArticleNote" value="<?php print $sArticleNote ?>" size="50" /></td>
 				</tr>
