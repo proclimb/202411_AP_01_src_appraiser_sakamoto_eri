@@ -20,7 +20,7 @@ function fnArticleEditCheck() {
 	
 	tmp = form.keyPlace.value;
 	if (tmp.length > 200) {
-		alert('鍵場所は100文字以内で入力してください');
+		alert('鍵場所は200文字以内で入力してください');
 		return;
 	}
 
