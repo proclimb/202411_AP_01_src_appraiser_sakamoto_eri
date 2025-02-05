@@ -43,8 +43,8 @@ function subArticle()
 		<input type="hidden" name="orderTo" value="<?php print $orderTo ?>" />
 		<input type="hidden" name="sPage" value="<?php print $sPage ?>" />
 		<input type="hidden" name="articleNo" />
-		<!-- <input type="hidden" name="sName" />
-		<input type="hidden" name="sRoom" /> -->
+		<input type="hidden" name="sName" />
+		<input type="hidden" name="sRoom" />
 
 		<a href="javascript:form.act.value='articleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
 
@@ -112,21 +112,21 @@ function subArticle()
 			$res = mysqli_query($conn, $sql);
 			$i = 0;
 			while ($row = mysqli_fetch_array($res)) {
-				$articleNo   = htmlspecialchars($row[0]);
-				$article     = htmlspecialchars($row[1]);
-				$room        = htmlspecialchars($row[2]);
-				$keyPlace    = htmlspecialchars($row[3]);
-				$articleNote = htmlspecialchars($row[4]);
-				$keyBox      = htmlspecialchars($row[5]);
-				$drawing     = htmlspecialchars($row[6]);
-				$sellCharge  = htmlspecialchars($row[7]);
+				$articleNo   = $row["ARTICLENO"];
+				$article     = $row["ARTICLE"];
+				$room        = $row["ROOM"];
+				$keyPlace    = $row["KEYPLACE"];
+				$articleNote =  $row["ARTICLENOTE"];
+				$keyBox      = $row["KEYBOX"];
+				$drawing     = $row["DRAWING"];
+				$sellCharge  = $row["SELLCHARGE"];
 			?>
 				<tr>
 				<td class="list_td<?php print $i ?>"><a href="javascript:form.act.value='articleEdit';form.articleNo.value='<?php print $articleNo ?>';form.submit();"><?php print $article ?></a></td>
 				<td class="list_td<?php print $i ?>"><?php print $room ?></td>
 				<td class="list_td<?php print $i ?>"><?php print $keyPlace ?></td>
 				<td class="list_td<?php print $i ?>"><?php print $articleNote ?></td>
-				<td class="list_td<?php print $i ?>"><a href="javascript:form.act.value='fManager';form.sName.value='<?php print $article ?>';form.sRoom.value='<?php print $room ?>';form.submit();">表示</a></td>
+				<td class="list_td<?php print $i ?>"><a href="javascript:form.act.value='fManager';form.sName.value='<?php print $article ?>';form.submit();">表示</a></td>
 				<td class="list_td<?php print $i ?>"><?php print $keyBox ?></td>
 				<td class="list_td<?php print $i ?>"><?php print $drawing ?></td>
 				<td class="list_td<?php print $i ?>"><?php print $sellCharge ?></td>
@@ -316,6 +316,10 @@ function subArticleEditComplete()
         $articleNo = fnNextNo('ARTICLE');
         $sql = fnSqlArticleInsert($articleNo, $article, $room, $keyPlace, $address, $articleNote, $keyBox, $drawing, $sellCharge, $del);
         $res = mysqli_query($conn, $sql);
+
+		$sql = fnSqlFManagerInsert(fnNextNo('FM'),$article,$room,$articleNote,$del);
+		$res = mysqli_query($conn,$sql);
+
     }
 
 	$params = array(
