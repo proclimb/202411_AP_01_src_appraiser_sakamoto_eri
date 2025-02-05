@@ -113,13 +113,13 @@ function subArticle()
 			$i = 0;
 			while ($row = mysqli_fetch_array($res)) {
 				$articleNo   = $row["ARTICLENO"];
-				$article     = $row["ARTICLE"];
-				$room        = $row["ROOM"];
-				$keyPlace    = $row["KEYPLACE"];
-				$articleNote =  $row["ARTICLENOTE"];
-				$keyBox      = $row["KEYBOX"];
-				$drawing     = $row["DRAWING"];
-				$sellCharge  = $row["SELLCHARGE"];
+				$article     = htmlspecialchars($row["ARTICLE"]);
+				$room        = htmlspecialchars($row["ROOM"]);
+				$keyPlace    = htmlspecialchars($row["KEYPLACE"]);
+				$articleNote =  htmlspecialchars($row["ARTICLENOTE"]);
+				$keyBox      = htmlspecialchars($row["KEYBOX"]);
+				$drawing     = htmlspecialchars($row["DRAWING"]);
+				$sellCharge  = htmlspecialchars($row["SELLCHARGE"]);
 			?>
 				<tr>
 				<td class="list_td<?php print $i ?>"><a href="javascript:form.act.value='articleEdit';form.articleNo.value='<?php print $articleNo ?>';form.submit();"><?php print $article ?></a></td>
