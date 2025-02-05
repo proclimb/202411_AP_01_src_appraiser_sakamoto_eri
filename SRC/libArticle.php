@@ -324,7 +324,7 @@ function subArticleEditComplete()
         'sPage' => 1,  // 1ページ目を表示
         'orderBy' => $orderBy,
         'orderTo' => $orderTo,
-        'sArticle' => $article  // 物件名を検索条件として追加
+        // 'sArticle' => $article  // 物件名を検索条件として追加
     );
     
     // リダイレクト用のURLを生成
