@@ -8,6 +8,10 @@ function fnYMDCheck(msg, obj) {
 	// 未入力時はチェックしない
 	oYMD = obj.value;
 
+	if (!oYMD) {
+		return true;
+	}
+
 	var tmp = oYMD.split('/');
 	var ymd = new Date(tmp[0], parseInt(tmp[1], 10) - 1, parseInt(tmp[2], 10));
 	var vYMD = ymd.getFullYear() + '/' + ('0' + (ymd.getMonth() + 1)).slice(-2) + '/' + ('0' + ymd.getDate()).slice(-2);
@@ -49,7 +53,7 @@ function isLength(length, msg, obj) {
  */
 function isNumericLength(length, msg, obj) {
 	rtn = false;
-	if (obj.value.length > 9 || obj.value.match(/[^0-8]+/)) {
+	if (obj.value.length > length  || obj.value.match(/[^0-9]+/)) {
 		alert(msg + "は" + length + "桁以内の半角数字で入力してください");
 		rtn = true;
 	}
