@@ -15,10 +15,10 @@ function subSell()
         $param["sPage"] = 1;
     }
 
-    if (! $param["orderBy"]) {
-        $param["orderBy"] = 'SEARCHDT';
-        $param["orderTo"] = 'desc';
-    }
+    // if (! $param["orderBy"]) {
+    //     $param["orderBy"] = 'SEARCHDT';
+    //     $param["orderTo"] = 'desc';
+    // }
 
     subMenu();
     subSellView($param);
