@@ -71,11 +71,11 @@ function fnSellEditCheck() {
 		alert('専有面積を入力してください');
 		return;
 	}
-	if (tmp.length > 6 || tmp.match(/[^0-9\.]+/)) {
+	if (tmp && (!tmp.match(/^\d{1,3}(\.\d{1,2})?$/) || tmp.match(/^0\d/))) {
 		alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
 		return;
 	}
-
+	
 	tmp = form.seller.value;
 	if (tmp.length == 0) {
 		alert('売主を入力してください');
