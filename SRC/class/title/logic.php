@@ -255,21 +255,31 @@ function subFTitleDelete()
     $conn = fnDbConnect();
 
     $DocNo = $_REQUEST['DocNo'];
+    $seqNo = isset($_REQUEST['seqNo']) ? $_REQUEST['seqNo'] : 0;
+    $sClassNo = isset($_REQUEST['sClassNo']) ? $_REQUEST['sClassNo'] : '';
+    $sDocNo = isset($_REQUEST['sDocNo']) ? $_REQUEST['sDocNo'] : '';
 
-    if ($_REQUEST['seqNo'] == 0) {
+    if ($seqNo == 0) {
         $sql = fnSqlFTitleRepetition($_REQUEST['classNo']);
         $res = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_array($res)) {
             $sql = fnSqlFTitleDelete($row['DOCNO']);
             $result = mysqli_query($conn, $sql);
         }
+        
+        // タイトル削除の場合はタイトル管理画面へ
+        $_REQUEST['act'] = 'fTitleSearch';
+        subFTitle();
     } else {
         $sql = fnSqlFTitleDelete($DocNo);
         $res = mysqli_query($conn, $sql);
+        
+        // 項目削除の場合は項目名管理画面へ
+        $_REQUEST['act'] = 'fTitleItemSearch';
+        $_REQUEST['sClassNo'] = $sClassNo;
+        $_REQUEST['sDocNo'] = $sDocNo;
+        subFTitleItem();
     }
-
-    $_REQUEST['act'] = 'fTitleSearch';
-    subFTitle();
 }
 
 //
