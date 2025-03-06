@@ -192,17 +192,29 @@ function subFTitleItemEditView($param)
                     <th>タイトル</th>
                     <td class="f16">
                         <?php
-                        $sql = fnSqlFTitleEdit($param["sDocNo"]);
-                        $res = mysqli_query($param["conn"], $sql);
-                        $row = mysqli_fetch_array($res);
-                        print htmlspecialchars($row[3]);
-
-                        ?><input type="hidden" name="classNo" value="<?php print htmlspecialchars($row[1]); ?>" />
+                        if (isset($param["titleName"])) {
+                            // エラー時に保持したタイトル名を表示
+                            print $param["titleName"];
+                        } else {
+                            // 通常時はDBから取得して表示
+                            $sql = fnSqlFTitleEdit($param["sDocNo"]);
+                            $res = mysqli_query($param["conn"], $sql);
+                            $row = mysqli_fetch_array($res);
+                            print htmlspecialchars($row[3]);
+                        }
+                        ?><input type="hidden" name="classNo" value="<?php print isset($param["classNo"]) ? htmlspecialchars($param["classNo"]) : htmlspecialchars($row[1]); ?>" />
                     </td>
                 </tr>
                 <tr>
                     <th>表示順<span class="red">（必須）</span></th>
-                    <td><input type="text" name="seqNo" value="<?php print $param["seqNo"]; ?>" /></td>
+                    <td>
+                        <input type="text" name="seqNo" value="<?php print $param["seqNo"]; ?>" />
+                        <?php
+                        if (isset($param["seqNoChk"])) {
+                            print "<span class=\"red\" align=\"right\">" . $param["seqNoChk"] . "</span>";
+                        }
+                        ?>
+                    </td>
                 </tr>
                 <tr>
                     <th>名前<span class="red">（必須）</span></th>

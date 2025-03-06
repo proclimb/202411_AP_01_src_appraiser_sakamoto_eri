@@ -88,6 +88,7 @@ function subFTitleEditComplete()
     $param["seqNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['seqNo']);
     $param["name"] = mysqli_real_escape_string($param["conn"], $_REQUEST['name']);
     $param["sClassNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sClassNo']);
+    $param["sDocNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sDocNo']);
 
     $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"]);
 
@@ -127,14 +128,43 @@ function subFTitleEditComplete()
                 subFTitleMsg($param);
             }
         } else {
-            $sql = fnSqlFTitleUpdate($param);
-            $res = mysqli_query($param["conn"], $sql);
-            subTitlePage1();
+            // 項目名の更新処理 - 重複チェック追加
+            // 同じクラス内で同じ表示順が存在するかチェック
+            $sql = "SELECT COUNT(*) AS cnt FROM TBLDOC 
+                    WHERE DEL = 1 
+                    AND CLASSNO = '" . $param["classNo"] . "' 
+                    AND SEQNO = '" . $param["seqNo"] . "' 
+                    AND DOCNO <> '" . $param["DocNo"] . "'";
+            $result = mysqli_query($param["conn"], $sql);
+            $row = mysqli_fetch_array($result);
+            
+            if ($row['cnt'] > 0) {
+                // 重複エラー
+                $param["seqNoChk"] = "既に登録されている表示順です";
+                $param["purpose"] = '更新';
+                $param["btnImage"] = 'btn_load.png';
+                
+                // タイトル情報を取得して保持
+                $sql = fnSqlFTitleEdit($param["sDocNo"]);
+                $res = mysqli_query($param["conn"], $sql);
+                $row = mysqli_fetch_array($res);
+                $param["titleName"] = htmlspecialchars($row[3]);
+                
+                // エラーメッセージ表示
+                subMenu();
+                subFTitleItemEditView($param);
+                print "</body>\n</html>";
+                exit();
+            } else {
+                // 重複がなければ更新処理
+                $sql = fnSqlFTitleUpdate($param);
+                $res = mysqli_query($param["conn"], $sql);
+                subTitlePage1();
+            }
         }
     } else {
         $param["DocNo"] = fnNextNo('DOC');
         if (! $param["seqNo"]) {
-
             if (! $ErrClassNo) {
                 $param["seqNo"] = 0;
                 $sql = fnSqlFTitleInsert($param);
@@ -148,11 +178,58 @@ function subFTitleEditComplete()
             }
             subTitlePage0();
         } else {
-            $sql = fnSqlFTitleInsert($param);
-            $res = mysqli_query($param["conn"], $sql);
-            subTitlePage1();
+            // 項目名の登録処理 - 重複チェック追加
+            // 同じクラス内で同じ表示順が存在するかチェック
+            $sql = "SELECT COUNT(*) AS cnt FROM TBLDOC 
+                    WHERE DEL = 1 
+                    AND CLASSNO = '" . $param["classNo"] . "' 
+                    AND SEQNO = '" . $param["seqNo"] . "'";
+            $result = mysqli_query($param["conn"], $sql);
+            $row = mysqli_fetch_array($result);
+            
+            if ($row['cnt'] > 0) {
+                // 重複エラー
+                $param["DocNo"] = "";
+                $param["seqNoChk"] = "既に登録されている表示順です";
+                $param["purpose"] = '登録';
+                $param["btnImage"] = 'btn_enter.png';
+                
+                // タイトル情報を取得して保持
+                $sql = fnSqlFTitleEdit($param["sDocNo"]);
+                $res = mysqli_query($param["conn"], $sql);
+                $row = mysqli_fetch_array($res);
+                $param["titleName"] = htmlspecialchars($row[3]);
+                
+                // エラーメッセージ表示
+                subMenu();
+                subFTitleItemEditView($param);
+                print "</body>\n</html>";
+                exit();
+            } else {
+                // 重複がなければ登録処理
+                $sql = fnSqlFTitleInsert($param);
+                $res = mysqli_query($param["conn"], $sql);
+                subTitlePage1();
+            }
         }
     }
+}
+
+function subFTitleItemRepetition($classNo, $seqNo, $DocNo)
+{
+    $conn = fnDbConnect();
+
+    $sql = "SELECT DOCNO, CLASSNO, SEQNO, NAME FROM TBLDOC 
+            WHERE DEL = 1 AND CLASSNO = '$classNo' AND SEQNO = '$seqNo'";
+    if ($DocNo) {
+        $sql .= " AND DOCNO <> '$DocNo'";
+    }
+    
+    $res = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($res) > 0) {
+        return true; // 重複あり
+    }
+    return false; // 重複なし
 }
 
 //
