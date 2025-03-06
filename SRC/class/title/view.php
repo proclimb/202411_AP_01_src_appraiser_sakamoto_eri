@@ -142,8 +142,8 @@ function subFTitleEditView($param)
                     <th>表示順<span class="red">（必須）</span></th>
                     <td><input type="text" name="classNo" value="<?php print $param["classNo"]; ?>" />
                         <?php
-                        if ($param["classNoChk"]) {
-                            print "<span class=\"red\" algin=\"right\">" . $param["classNoChk"] . "</span>";
+                        if (isset($param["classNoChk"])) {
+                            print "<span class=\"red\" align=\"right\">" . $param["classNoChk"] . "</span>";
                         }
                         ?>
                     </td>

@@ -344,11 +344,25 @@ function subFTitleRepetition($classNo, $DocNo)
 function subFTitleMsg($param)
 {
     $param["classNoChk"] = "既に登録されている表示順です";
-    $sql = fnSqlFTitleEdit($param["DocNo"]);
-    $res = mysqli_query($param["conn"], $sql);
-    // $param["classNo"] = mysqli_result( $res,0,1 );
-    $row = mysqli_fetch_array($res);
-    $param["classNo"] = $row[1];
+    
+    // DocNoがある場合のみfnSqlFTitleEditを実行
+    if ($param["DocNo"]) {
+        $sql = fnSqlFTitleEdit($param["DocNo"]);
+        $res = mysqli_query($param["conn"], $sql);
+        $row = mysqli_fetch_array($res);
+        
+        // 以前の値で上書きしないよう、既に値がセットされていない場合のみDBの値を使用
+        if (!isset($param["classNo"]) || $param["classNo"] === '') {
+            $param["classNo"] = htmlspecialchars($row[1]);
+        }
+        if (!isset($param["name"]) || $param["name"] === '') {
+            $param["name"] = htmlspecialchars($row[3]);
+        }
+    }
+    
+    // 入力値を保持（既に値がセットされている場合はそれを優先）
+    $param["classNo"] = isset($_REQUEST['classNo']) ? htmlspecialchars($_REQUEST['classNo']) : $param["classNo"];
+    $param["name"] = isset($_REQUEST['name']) ? htmlspecialchars($_REQUEST['name']) : $param["name"];
 
     $_REQUEST['act'] = 'fTitleEdit';
     subMenu();
