@@ -42,11 +42,11 @@ function fnSqlAdminUserEdit($userNo)
 //
 function fnSqlAdminUserUpdate($userNo, $name, $id, $password, $authority)
 {
-    $pass = addslashes(hash('adler32', $password));
+    // $pass = addslashes(hash('adler32', $password));
     $sql = "UPDATE TBLUSER";
     $sql .= " SET NAME = '$name'";
     $sql .= ",ID = '$id'";
-    $sql .= ",PASSWORD = '$pass'";
+    $sql .= ",PASSWORD = '$password'";
     $sql .= ",AUTHORITY = '$authority'";
     $sql .= ",UPDT = CURRENT_TIMESTAMP";
     $sql .= " WHERE USERNO = '$userNo'";
